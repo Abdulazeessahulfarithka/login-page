@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './register.css'
 import { Link } from 'react-router-dom'
+import API from '../API/api.js'
+import axios from 'axios'
 
 function Register() {
+
+useEffect(()=>{
+  const fetchdata=async()=>{
+    try{
+   const response =await axios.post(`${API}/api/user/register`)
+   console.log(response)
+    }catch(error){
+
+    }
+  }
+  fetchdata()
+},[])
   return (
    <>
    <div className='app'>
