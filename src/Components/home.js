@@ -4,15 +4,18 @@ import axios from 'axios';
 import API from '../API/api';
 
 function Home() {
-  const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${API}/api/user/alluser`); 
-        console.log(response)
-        if (response.data) {
-          setUser(response.data);
+        const response = await axios.get(`${API}/api/user/alluser`);
+        console.log('API Response:', response.data); 
+
+        if (response.data.success && response.data.data.length > 0) {
+          setUsers(response.data.data); 
+        } else {
+          setUsers([]); 
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -25,8 +28,7 @@ function Home() {
   return (
     <>
       <h1>Welcome to the page</h1>
-
-      {user ? (
+      {users.length > 0 ? (
         <table className="custom-table">
           <thead>
             <tr>
@@ -36,11 +38,13 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.phoneno}</td>
-            </tr>
+            {users.map((user, index) => (
+              <tr key={index}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.phoneno}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       ) : (
